@@ -1,0 +1,5 @@
+.temp
+.venv
+software_arch
+.env
+*.pdf
