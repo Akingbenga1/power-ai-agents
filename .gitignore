@@ -3,3 +3,5 @@
 software_arch
 .env
 *.pdf
+vector_db/*
+__pycache__
