@@ -592,6 +592,7 @@ async def main():
         return
     
     print("✅ OpenAI API key loaded successfully!")
+    print("OpenAI API key: ", api_key   )
     print("🗄️ Initializing vector database for chat history...")
     
     try:

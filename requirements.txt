@@ -3,10 +3,12 @@ reportlab>=4.0.0
 requests>=2.25.0
 beautifulsoup4>=4.9.0
 python-dotenv>=1.0.0
+# PyTorch for Windows - install CPU version to avoid DLL issues
+torch>=2.0.0
 sentence-transformers>=2.0.0
 scikit-learn>=1.0.0
 numpy<2
 pydantic>=1.9
 pydantic-settings>=2.0.0
-dotenv
+gradio>=4.0.0
 # Add other dependencies here, e.g., for a vector database client like pinecone-client or chromadb

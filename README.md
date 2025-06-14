@@ -1,6 +1,6 @@
 # AI Workforce Manager
 
-A dynamic AI Agent Hierarchy system built with the OpenAI Agents SDK that intelligently routes tasks to specialized AI agents and provides each agent with complete conversation history for full context awareness using ChromaDB vector database.
+A dynamic AI Agent Hierarchy system built with the OpenAI Agents SDK that intelligently routes tasks to specialized AI agents and provides each agent with complete conversation history for full context awareness using ChromaDB vector database. Available in both web interface (Gradio) and command-line interface modes.
 
 ## Features
 
@@ -27,12 +27,18 @@ A dynamic AI Agent Hierarchy system built with the OpenAI Agents SDK that intell
 - **Persistent Storage**: All conversations stored permanently in ChromaDB
 - **Continuity**: Agents maintain consistency and build upon previous conversations
 
+### 🌐 Dual Interface Options
+- **Web Interface (Gradio)**: Modern, user-friendly web interface with tabs and real-time chat
+- **Command Line Interface**: Traditional CLI for power users and automation
+
 ### 🔍 Advanced Features
-- **Similarity Search**: `search <query>` to find related past conversations using vector similarity
-- **History Browsing**: `history` to view recent conversations
+- **Similarity Search**: Find related past conversations using vector similarity
+- **History Browsing**: View recent conversations with full context
 - **Database Statistics**: View total conversations and database info
 - **Robust Error Handling**: Comprehensive error handling with detailed error messages
 - **Context Injection**: All agents receive up to 50 recent conversations for context
+- **Real-time Chat**: Interactive web interface with instant responses
+- **Multi-tab Layout**: Organized interface with dedicated sections for chat, search, and history
 
 ## Installation
 
@@ -58,12 +64,27 @@ OPENAI_API_KEY=sk-your-actual-api-key-here
 
 ## Usage
 
-### Basic Usage
+### 🌐 Web Interface (Recommended)
 ```bash
+# Start the web interface
+python gradio_interface.py
+```
+The web interface will automatically open in your browser at `http://localhost:7860`.
+
+**Web Interface Features:**
+- **💬 Chat Tab**: Main conversation interface with your AI agents
+- **🔍 Search Tab**: Search through past conversations using vector similarity
+- **📚 History Tab**: View recent conversation history
+- **🤖 Agents Tab**: Information about all available specialized agents
+- **🔄 System Status**: Initialize and monitor the AI Workforce Manager
+
+### 💻 Command Line Interface
+```bash
+# Start the CLI version
 python main.py
 ```
 
-### Available Commands
+**CLI Commands:**
 - **Regular prompts**: Just type your request and the system will route it to the appropriate agent
 - **Search**: `search web scraping` - Find similar conversations about web scraping using vector similarity
 - **History**: `history` - View recent conversation history
@@ -115,11 +136,13 @@ Each agent receives:
 ## File Structure
 
 ```
-├── main.py                    # Main application with complete history integration
+├── main.py                    # Main CLI application with complete history integration
+├── gradio_interface.py        # Web interface using Gradio
 ├── chat_history_manager.py    # ChromaDB vector database integration
+├── pdf_agent_tools.py         # PDF creation tools and utilities
 ├── test_historical_context.py # Test script for complete history functionality
 ├── test_system.py             # System integration tests
-├── requirements.txt           # Python dependencies
+├── requirements.txt           # Python dependencies (includes Gradio)
 ├── .env.example              # Environment variables template
 ├── README.md                 # This file
 └── chroma_db/                # ChromaDB database files (auto-created)
@@ -128,6 +151,7 @@ Each agent receives:
 ## Dependencies
 
 - **openai-agents**: OpenAI Agents SDK for agent orchestration
+- **gradio**: Modern web interface framework for AI applications
 - **chromadb**: Vector database for semantic search and history storage
 - **python-dotenv**: Environment variable management
 - **reportlab**: PDF generation capabilities
@@ -207,6 +231,18 @@ This will test:
 - ChromaDB functionality
 - Agent initialization
 
+### Web Interface Testing
+```bash
+# Test the Gradio interface
+python gradio_interface.py
+```
+
+This will:
+- Launch the web interface at http://localhost:7860
+- Test all interface tabs and functionality
+- Verify integration with the AI Workforce Manager
+- Test real-time chat and history features
+
 ## Benefits of Complete History Integration
 
 ### 🔄 **Continuity**
@@ -260,12 +296,23 @@ pip install "numpy<2"
 pip install pydantic==1.10.12
 ```
 
+7. **Gradio Installation Issues**
+```bash
+pip install gradio>=4.0.0
+```
+
+8. **Web Interface Not Loading**
+- Check that port 7860 is available
+- Try different port: `demo.launch(server_port=7861)`
+- Ensure firewall allows local connections
+
 ### Debug Mode
 Set `DEBUG=true` in your `.env` file for verbose logging including:
 - Complete history retrieval details
 - Context injection information
 - Agent decision reasoning
 - ChromaDB operation details
+- Gradio interface events and responses
 
 ## Contributing
 
@@ -289,4 +336,33 @@ For issues and questions:
 
 ---
 
-**Note**: This system requires an active OpenAI API key and internet connection for full functionality. ChromaDB operates locally and does not require external services. Each agent receives complete conversation history for maximum context awareness and continuity. ChromaDB is a required dependency - the system will not function without it. 
+## Quick Start Guide
+
+### Option 1: Web Interface (Easiest)
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up your API key in .env file
+echo "OPENAI_API_KEY=your_api_key_here" > .env
+
+# Launch web interface
+python gradio_interface.py
+```
+Open your browser to `http://localhost:7860` and start chatting with your AI agents!
+
+### Option 2: Command Line
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up your API key in .env file
+echo "OPENAI_API_KEY=your_api_key_here" > .env
+
+# Launch CLI
+python main.py
+```
+
+---
+
+**Note**: This system requires an active OpenAI API key and internet connection for full functionality. ChromaDB operates locally and does not require external services. Each agent receives complete conversation history for maximum context awareness and continuity. ChromaDB is a required dependency - the system will not function without it. The Gradio web interface provides the most user-friendly experience with real-time chat, tabbed navigation, and integrated search capabilities. 
