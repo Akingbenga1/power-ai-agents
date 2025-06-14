@@ -39,29 +39,56 @@ class GradioAIWorkforceManager:
             # Get agent decision
             decision_response = await self.manager.decide_agent(user_input)
             
-            # Check if multiple agents are needed
-            if "multiple agents" in decision_response.lower() or "ask" in decision_response.lower():
-                bot_response = f"🤔 {decision_response}\n\nPlease provide a more specific request or choose a single agent."
+            # Parse the decision using the new parser
+            parsed_decision = self.manager.parse_decision_response(decision_response)
+            
+            if parsed_decision["type"] == "single":
+                # Single agent execution
+                agent_name = parsed_decision["agent"]
+                if agent_name not in self.manager.specialized_agents:
+                    bot_response = f"❌ Error: Agent '{agent_name}' not found in available specialists."
+                else:
+                    bot_response = f"🎯 **Assigning to {agent_name}...**\n\n"
+                    
+                    # Get agent response
+                    agent_response = await self.manager.delegate_task(agent_name, user_input)
+                    bot_response += f"**{agent_name} Response:**\n{agent_response}"
+                    
+                    # Log the interaction
+                    self.manager.history_manager.add_entry(user_input, agent_response, agent_name, None)
+                    
+            elif parsed_decision["type"] == "multi":
+                # Multi-agent workflow execution
+                agents = parsed_decision["agents"]
+                workflow_description = parsed_decision["description"]
                 
-            # Check if no suitable agent found
-            elif "no suitable agent" in decision_response.lower() or "suggest creating" in decision_response.lower():
-                bot_response = f"💡 {decision_response}"
+                bot_response = f"🔄 **Initiating Multi-Agent Workflow...**\n\n"
+                bot_response += f"**Workflow:** {' → '.join(agents)}\n"
+                bot_response += f"**Plan:** {workflow_description}\n\n"
                 
-            # Valid agent chosen
-            elif decision_response in self.manager.specialized_agents:
-                chosen_agent = decision_response
-                bot_response = f"🔄 **Assigning to {chosen_agent}...**\n\n"
-                
-                # Get agent response
-                agent_response = await self.manager.delegate_task(chosen_agent, user_input)
-                bot_response += f"**{chosen_agent} Response:**\n{agent_response}"
-                
-                # Log the interaction
-                manager_response = f"Task allocated to {chosen_agent}. Agent response:\n{agent_response}"
-                self.manager.history_manager.add_entry(user_input, manager_response, chosen_agent, None)
+                # Validate all agents exist
+                invalid_agents = [agent for agent in agents if agent not in self.manager.specialized_agents]
+                if invalid_agents:
+                    bot_response += f"❌ Error: Invalid agents in workflow: {', '.join(invalid_agents)}"
+                else:
+                    workflow_response = await self.manager.orchestrate_multi_agent_workflow(
+                        agents, workflow_description, user_input
+                    )
+                    bot_response += workflow_response
+                    
+                    # Log the interaction
+                    workflow_log = f"Multi-agent workflow: {' -> '.join(agents)}"
+                    self.manager.history_manager.add_entry(user_input, workflow_response, workflow_log, None)
+                    
+            elif parsed_decision["type"] == "none":
+                # No suitable agent found
+                message = parsed_decision["message"]
+                bot_response = f"🤔 **No suitable agent found for this request.**\n\n{message}"
                 
             else:
-                bot_response = f"❓ Unexpected response: {decision_response}\nPlease try rephrasing your request."
+                # Error in decision parsing
+                error_msg = parsed_decision.get("message", "Unknown error in decision parsing")
+                bot_response = f"❌ **Decision parsing error:** {error_msg}"
                 
             # Update history with bot response
             history[-1][1] = bot_response

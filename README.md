@@ -1,11 +1,12 @@
 # AI Workforce Manager
 
-A dynamic AI Agent Hierarchy system built with the OpenAI Agents SDK that intelligently routes tasks to specialized AI agents and provides each agent with complete conversation history for full context awareness using ChromaDB vector database. Available in both web interface (Gradio) and command-line interface modes.
+A dynamic AI Agent Hierarchy system built with the OpenAI Agents SDK that intelligently routes tasks to specialized AI agents and provides each agent with complete conversation history for full context awareness using ChromaDB vector database. **Now features Multi-Agent Workflows** that automatically coordinate multiple agents to complete complex tasks without user intervention. Available in both web interface (Gradio) and command-line interface modes.
 
 ## Features
 
-### 🤖 AI Agent Hierarchy
-- **AI Workforce Manager**: Central triage agent that analyzes requests and routes to specialists
+### 🤖 AI Agent Hierarchy with Multi-Agent Workflows
+- **AI Workforce Manager**: Central triage agent that analyzes requests and automatically orchestrates single or multiple agents
+- **Multi-Agent Orchestration**: Automatically coordinates multiple agents to complete complex tasks
 - **12 Specialized Agents**: Each with specific expertise and detailed instructions
   - Web Scraper
   - Business Environment Analyst
@@ -92,17 +93,48 @@ python main.py
 
 ### Example Interactions
 
+#### Single Agent Tasks
 ```
-User Prompt: Create a marketing report for my tech startup
+User Prompt: Write a blog post about renewable energy
 
-AI Workforce Manager: Allocating task to Market Research Analyst...
-Market Research Analyst: Based on our previous conversations about startups and market analysis, I'll create a comprehensive marketing report building upon the established framework...
+AI Workforce Manager: 🎯 Assigning task to Content Writer
+Content Writer: Here's a comprehensive blog post about renewable energy...
 ```
 
+#### Multi-Agent Workflows
+```
+User Prompt: Create a comprehensive marketing strategy with visuals and PDF report
+
+AI Workforce Manager: 🔄 Initiating multi-agent workflow
+📋 Workflow: Market Research Analyst → Content Writer → Graphic Designer → PDF Producer
+📝 Plan: Research market, write strategy, create visuals, produce PDF document
+
+🤖 Multi-Agent Workflow Completed
+
+Workflow: Market Research Analyst → Content Writer → Graphic Designer → PDF Producer
+Description: Research market, write strategy, create visuals, produce PDF document
+
+## Step 1: Market Research Analyst
+[Detailed market analysis with trends, competitors, and opportunities...]
+
+## Step 2: Content Writer  
+[Comprehensive marketing strategy based on research...]
+
+## Step 3: Graphic Designer
+[Visual elements including charts, infographics, and design assets...]
+
+## Step 4: PDF Producer
+✅ PDF Created Successfully!
+📄 File Path: /path/to/Marketing_Strategy_Report.pdf
+📋 Content Summary: Complete marketing strategy with visuals
+📊 Document Details: 12 pages, 2,847 words, 1.2MB
+```
+
+#### Building on Previous Work
 ```
 User Prompt: Now create a social media strategy for the same startup
 
-AI Workforce Manager: Allocating task to Social Media Manager...
+AI Workforce Manager: 🎯 Assigning task to Social Media Manager
 Social Media Manager: Building upon the marketing report we just created, I'll develop a social media strategy that aligns with the identified target market and brand positioning...
 ```
 
